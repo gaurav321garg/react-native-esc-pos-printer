@@ -2,6 +2,7 @@ package com.reactnativeescposprinter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.net.Uri;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -598,10 +599,8 @@ public class EscPosPrinterModule extends ReactContextBaseJavaModule implements R
     }
 
     if(uriString.startsWith("file")) {
-      BitmapFactory.Options options = new BitmapFactory.Options();
-      options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-      Bitmap image = BitmapFactory.decodeFile(uriString, options);
-
+      Log.e("MYAPP", "print uri"+uriString);
+      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath());
       return image;
     }
 
