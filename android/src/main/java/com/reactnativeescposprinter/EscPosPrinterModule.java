@@ -3,6 +3,8 @@ package com.reactnativeescposprinter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.net.Uri;
+import android.widget.Toast;
+
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -599,9 +601,29 @@ public class EscPosPrinterModule extends ReactContextBaseJavaModule implements R
     }
 
     if(uriString.startsWith("file")) {
-      Log.e("MYAPP", "print uri"+uriString);
-      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath());
+      int retryCount = 0;
+      Bitmap image = null;
+      while (retryCount < 3) {
+        try {
+          File file = new File(uriString);
+          InputStream inputStream = new FileInputStream(file);
+          BitmapFactory.Options options = new BitmapFactory.Options();
+          options.inPreferredConfig = Bitmap.Config.ALPHA_8;
+          image = BitmapFactory.decodeStream(inputStream, null, options);
+          Toast.makeText(mContext, "success, World!", Toast.LENGTH_SHORT).show();
+          break;
+        } catch (Exception e) {
+          retryCount++;
+          Toast.makeText(mContext, "exception, World! Retrying...", Toast.LENGTH_SHORT).show();
+          e.printStackTrace();
+        }
+      }
+      if (image == null) {
+        Toast.makeText(mContext, "Failed to decode image after 3 retries", Toast.LENGTH_SHORT).show();
+      }
+
       return image;
+
     }
 
     int resourceId = mContext.getResources().getIdentifier(uriString, "drawable", mContext.getPackageName());
