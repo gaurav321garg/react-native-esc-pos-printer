@@ -601,8 +601,12 @@ public class EscPosPrinterModule extends ReactContextBaseJavaModule implements R
     }
 
     if(uriString.startsWith("file")) {
-      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath());
-      return image
+
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inPreferredConfig = Bitmap.Config.ALPHA_8;
+
+      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath(),options);
+      return image;
     }
 
     int resourceId = mContext.getResources().getIdentifier(uriString, "drawable", mContext.getPackageName());
