@@ -602,7 +602,7 @@ public class EscPosPrinterModule extends ReactContextBaseJavaModule implements R
 
     if(uriString.startsWith("file")) {
 
-      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath(),options);
+      Bitmap image = BitmapFactory.decodeFile(Uri.parse(uriString).getPath());
       return image;
     }
 
